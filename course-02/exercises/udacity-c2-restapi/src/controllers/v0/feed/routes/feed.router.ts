@@ -3,6 +3,7 @@ import { FeedItem } from '../models/FeedItem';
 import { requireAuth } from '../../users/routes/auth.router';
 import * as AWS from '../../../../aws';
 
+
 const router: Router = Router();
 
 // Get all feed items
@@ -18,6 +19,19 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+
+router.get('/:id', 
+    requireAuth, 
+    async (req: Request, res: Response) => {
+        //@TODO try it yourself
+        let { id } = req.query;
+        if(!id){
+            res.status(400).send('id required');
+        }
+
+        const item = await FeedItem.findByPk(id);
+        res.status(201).send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
